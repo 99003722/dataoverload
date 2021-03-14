@@ -12,7 +12,6 @@ src/operations.c\
 test/test_calculator_operations.c\
 unity/unity.c
 
-
 TEST_OUTPUT = $(BUILD)/Test_$(PROJECT_NAME).out
 
 # All include folders with header files
@@ -37,7 +36,7 @@ $(PROJECT_NAME):all
 .PHONY: run clean test doc all
 
 all: $(SRC) $(BUILD)
-	gcc $(SRC) $(INC) -o $(PROJECT_OUTPUT).out
+	gcc $(SRC) $(INC) -o $(PROJECT_OUTPUT).out -lm
 
 # Call `make run` to run the application
 run:$(PROJECT_NAME)
@@ -49,16 +48,20 @@ run:$(PROJECT_NAME)
 
 # Build and run the unit tests
 test:$(BUILD)
-	gcc $(TEST_SRC) $(INC) -o $(TEST_OUTPUT)
+	gcc $(SRC) $(INC) -o $(TEST_OUTPUT) -lm
 	./$(TEST_OUTPUT)
+
+coverageCheck:$(BUILD)
+	g++ -fprofile-arcs -ftest-coverage -fPIC -O0 $(SRC) $(INC) -o $(TEST_OUTPUT)
+	./$(TEST_OUTPUT)
+	
+	
+memcheck: $(PROJECT_NAME).out
+	valgrind ./$(PROJECT_NAME).out
 
 # Remove all the built files, invoke by `make clean`
 clean:
 	rm -rf $(BUILD) $(DOCUMENTATION_OUTPUT)
-
-coverageCheck:$(BUILD)
-	g++ -fprofile-arcs -ftest-coverage -fPIC -O0 $(TEST_SRC) $(INC) -o $(TEST_OUTPUT)
-	./$(TEST_OUTPUT)
 
 # Create new build folder if not present
 $(BUILD):
