@@ -5,7 +5,13 @@ PROJECT_NAME = Calculator
 BUILD = build
 
 # All source code files
-SRC = src/conversion.c\
+SRC = project_main.c\
+src/conversion.c\
+src/calculator_operations.c\
+src/inbuild_functions.c\
+src/operations.c
+
+TEST_SRC = src/conversion.c\
 src/calculator_operations.c\
 src/inbuild_functions.c\
 src/operations.c\
@@ -48,7 +54,7 @@ run:$(PROJECT_NAME)
 
 # Build and run the unit tests
 test:$(BUILD)
-	gcc $(SRC) $(INC) -o $(TEST_OUTPUT) -lm
+	gcc $(TEST_SRC) $(INC) -o $(TEST_OUTPUT) -lm
 	./$(TEST_OUTPUT)
 
 coverageCheck:$(BUILD)
